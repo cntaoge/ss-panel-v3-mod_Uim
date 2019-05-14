@@ -1,109 +1,149 @@
 # 欢迎使用ss panel v3 mod 再次修改版
 
 
-**ss-panel-v3-mod**是一款专为shadowsocks设计的web前端面板，再次感谢ss-panel-v3-mod 的制作者，修改后的功能简介：
-
-- **支付系统集成**：集成 支付宝当面付  易付通 码支付 TrimePay 等多种支付系统，使用方法见项目[wiki](https://github.com/NimaQu/ss-panel-v3-mod_Uim/wiki/)
-- **UI** ：修改为 ~~援交~~ 圆角、并自定义了几个图标的显示，节点列表等級0可见等級1节点但无法看见节点详情，增加了国家图标显示
-- **商店**：商品增加同时连接设备数，用户限速属性
-- 从肥羊那里**抄**来的：新用户注册现金奖励|高等级节点体验|设备数量限制
-- **优化**：css和js等置入本地提升加载速度
-- 增加**v2Ray** 功能，详情请看 wiki: [Indexyz 版](https://github.com/Anankke/ss-panel-v3-mod_Uim/wiki/v2ray---indexyz-%E7%89%88%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B)  |  [Rico 版](https://github.com/Anankke/ss-panel-v3-mod_Uim/wiki/v2ray---Rico-%E7%89%88%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B)
-
-Telegram 频道 ：https://t.me/sspanel_Uim
-
-Telegram 非官方水群 ：https://t.me/SSUnion
-
-演示站: [sspanel.host](https://sspanel.host) 账号和密码都是 admin  对接节点的 mukey=NimaQu
-
-**原作者** [galaxychuck](https://github.com/galaxychuck)
-
-[支持开发者请点我](https://github.com/NimaQu/ss-panel-v3-mod_UIM#%E5%85%B3%E4%BA%8E%E6%8D%90%E8%B5%A0)
-
 ## 搭建教程
 
-GitHub Wiki : https://github.com/NimaQu/ss-panel-v3-mod_Uim/wiki/%E5%89%8D%E7%AB%AF%E5%AE%89%E8%A3%85
-
-Wiki已经启用，欢迎为此面板维护wiki
 
 #### 鸣谢
 
 ##### [galaxychuck](https://github.com/galaxychuck)
 
 - 面板**原作者**
+-------------------------------------------------------------------------------------
+前端面板：
+安装宝塔
+配置PHP (宝塔用户)
+在禁用函数一栏找到 system proc_open proc_get_status 去除它
+在性能调整中，把 PHP 运行模式设置为 静态
+在配置修改中 按 Ctrl+F 搜索 display_errors = 改为 Off 后保存
 
-##### [hkserversolution](https://www.hkserversolution.com/cart.php)
-- Demo 演示站服务器赞助
+web环境配置好后
 
-##### [dumplin](https://github.com/dumplin233) 
+cd /你的网站目录  例：cd /www/wwwroot/你的网站目录  
+yum update
+yum install git -y
+git clone -b master https://github.com/Anankke/ss-panel-v3-mod_Uim.git tmp && mv tmp/.git . && rm -rf tmp && git reset --hard
+chown -R root:root *
+chmod -R 755 *
+chown -R www:www storage
+php composer.phar install
 
-- 码支付对接 + 码支付当面付二合一
-- 为面板加入 AFF 链接功能
-- 商品增加限速和限制 ip 属性
-- 多端口订阅
-- 解决用户列表加载缓慢历史遗留问题
+移除防跨目录
+修改网站目录
+/你的网站目录/public;
 
-##### [RinSAMA](https://github.com/mxihan)
-
-- 整理分类 config.php
-- 美观性调整
-- 客服系统优化
-
-##### [miku](https://github.com/xcxnig)
-
-- 美观和性能优化
-
-##### [Tony Zou](https://github.com/ZJY2003)
-
-- 为公告增加群发邮件功能
-- 节点负载情况显示&用户账户过期在首页弹窗提醒
-- 增加返利列表
-
-[**Indexyz**](https://github.com/Indexyz)
-
-- 为面板增加 v2Ray 功能
-
-[**NeverBehave**](https://github.com/NeverBehave)
-
-- 添加 Telegram OAuth
-
-[**CGDF**](https://github.com/CGDF-GitHub)
-
-- xcat一键update
-- 适配SSD
-- 用户列表分页加载
-
-[**CHEN**](https://github.com/ChenSee)
-
-- 免签约支付宝与微信，自带监听，不需第三方软件，直接到个人账户
-
-[**laurieryayoi**](https://github.com/laurieryayoi)
-
-- 重做美化UI（~~援交~~圆角化）
-
-- 重写节点列表，支持分级显示所有级别节点
-
-##### 还有所有被引用过代码的同学，以及所有提交过issue的同学。
-
-#### 关于捐赠
-
-您对我们的帮助将是支持我们做下去的动力，只需您在购买部分产品或向他人推荐产品时从我们的返利链接购买，这就是对我们很大的支持了。~~没有钱了，肯定要做啊，不做没有钱用啊，打工是不可能打工的，这辈子不可能打工的~~
+Example Nginx Configuration伪静态设置
+location / {
+    try_files $uri /index.php$is_args$args;
+}
 
 
-##### dumplin
+配置数据库
+登陆数据库
+mysql -u root -p                           // 这里需要输入密码
+mysql>CREATE DATABASE database_name;       // 新建数据库
+mysql>use database_name;                   // 选择数据库
+mysql>source /网站目录/sql/glzjin_all.sql;  // 导入.sql文件
 
-- [码支付-微信收款功能开通](https://codepay.fateqq.com/i/39756)
+配置数据库访问权限为所有人
 
-##### galaxychuck
+配置 sspanel
+cd /网站目录
+cp config/.config.php.example config/.config.php
+vi config/.config.php
+重启Nginx php
+创建管理员并同步用户
+php xcat createAdmin          //创建管理员
+php xcat syncusers            //同步用户
+php xcat initQQWry            //下载IP解析库
+php xcat resetTraffic         //重置流量
+php xcat initdownload         //下载ssr程式
 
-- [黛米付-支付接入](https://www.daimiyun.cn/register.php?aff=624)
-- [冲上云霄云主机](http://console.soar-clouds.com/aff.php?aff=94)
-- [Vultr](https://www.vultr.com/?ref=7205737)
+设置定时任务
+执行 crontab -e命令, 添加以下四条
+30 22 * * * php /网站目录/xcat sendDiaryMail
+0 0 * * * php -n /网站目录/xcat dailyjob
+*/1 * * * * php /网站目录/xcat checkjob
+*/1 * * * * php /网站目录/xcat syncnode
 
-[laurieryayoi 的前端课程报名](https://t.me/kinokonominoco)
+如果需要自动备份，可模仿以下两例，自行添加一条
 
+例1：每20分钟备份1次（若间隔大于60分钟，看例2）：
+*/20 * * * * php -n /网站目录/xcat backup
 
+例2：每20小时备份1次（若间隔大于24小时，自行Google）：
+0 */20 * * * php -n /网站目录/xcat backup
 
-## 免责声明
+如果需要财务报表，可选添加以下三条
+5 0 * * * php /网站目录/xcat sendFinanceMail_day
+6 0 * * 0 php /网站目录/xcat sendFinanceMail_week
+7 0 1 * * php /网站目录/xcat sendFinanceMail_month
 
-本程序由 MIT License 授权。**不提供任何担保**。使用本程序即表明，您知情并同意：程序开发者不对此程序导致的任何服务中断、数据损失或任何少见未列出的事故负责。
+如果需要检测被墙，添加以下一条
+*/1 * * * * php /网站目录/xcat detectGFW
+
+如果要用到radius，需要添加下面这三条
+*/1 * * * * php /网站目录/xcat synclogin
+*/1 * * * * php /网站目录/xcat syncvpn
+*/1 * * * * php -n /网站目录/xcat syncnas
+-------------------------------------------------------------------
+后端一键安装脚本
+
+安装 For CentOS 7 x64
+yum install wget -y && wget https://raw.githubusercontent.com/SuicidalCat/Airport-toolkit/master/ssr_node_c7.sh && chmod +x ssr_node_c7.sh && ./ssr_node_c7.sh
+
+安装 For Ubuntu 18.04 x64
+apt-get install wget -y && wget https://raw.githubusercontent.com/SuicidalCat/Airport-toolkit/master/ssr_node_u18.sh && chmod +x ssr_node_u18.sh && ./ssr_node_u18.sh
+
+卸载
+systemctl disable ssr_node && \rm /usr/lib/systemd/system/ssr_node.service && \rm -rf /soft/shadowsocks
+
+设置开机启动
+systemctl enable ssr_node
+
+服务启动
+systemctl start ssr_node
+
+服务停止
+systemctl stop ssr_node
+----------------------------------------------------------------------
+版本升级
+cd /www/wwwroot/你网站目录 到站点根目录(保证.git目录存在)执行
+
+git fetch --all
+git reset --hard origin/master
+git pull
+注意:你会丢失除 .config.php 外目前自己的所有改动，请做好文件备份，如不想丢失改动， 请参考这个文章7.3 Git 工具- 储藏与清理
+
+2.迁移config 执行命令
+
+php /网站目录/xcat update
+
+迁移/更新之前会自动备份原config为.config.php.bak
+
+迁移/更新完成之后会输出新旧配置之间的差异
+
+3.UI更新后请刷新浏览器缓存，有CDN需要清理CDN内缓存的CSS和JS文件，同时检查并清除nginx缓存
+dev需要安装nodejs和npm
+出错提示1:Peer reports incompatible or unsupported protocol version.##
+原因：Git版本过低
+
+解决方法：
+
+1、安装所需软件包
+
+yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel
+yum install gcc perl-ExtUtils-MakeMaker
+2、下载&安装
+
+cd /usr/src
+wget https://www.kernel.org/pub/software/scm/git/git-2.7.3.tar.gz
+tar xzf git-2.7.3.tar.gz
+cd git-2.7.3
+make prefix=/usr/local/git all
+make prefix=/usr/local/git install
+echo "export PATH=$PATH:/usr/local/git/bin" >> /etc/bashrc
+source /etc/bashrc
+3、检查版本：2.X.X版本即可
+
+git --version
